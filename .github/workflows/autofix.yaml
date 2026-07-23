@@ -8,12 +8,16 @@ permissions:
   contents: read
 
 env:
-  rust_clippy: 1.65
+  rust_toolchain: stable
 
 jobs:
   autofix:
     runs-on: ubuntu-latest
     steps:
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ env.rust_toolchain }}
+          components: rustfmt, clippy
       - uses: actions/checkout@v7
       - uses: actions/cache@v6
         with:
@@ -23,10 +27,7 @@ jobs:
             ~/.cargo/bin/registry/cache/
             ~/.cargo/git/db/
             target/
-          key: autofix-${{  hashFiles('**/Cargo/.lock') }}
-
-      - run: rustup toolchain install ${{ env.rust_clippy }} --profile minimal --component rustfmt --component clippy
-      - run: rustup default ${{ env.rust_clippy }}
+          key: autofix-${{  hashFiles('**/Cargo.lock') }}
 
       - run: cargo clippy --fix --workspace
       - run: cargo fmt --all
