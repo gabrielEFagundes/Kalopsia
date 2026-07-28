@@ -10,13 +10,16 @@ pub struct Dev {
 
 impl Dev {
     /// Constructor to create a new Dev profile
-    /// 
+    ///
     /// Default fields:
     /// - nodesDone: Always starts empty and gets added dynamically
     pub fn new(skills: Vec<String>) -> Self {
-        Self { nodesDone: Vec::new(), skills }
+        Self {
+            nodesDone: Vec::new(),
+            skills,
+        }
     }
-    
+
     pub fn add_node(&mut self, node: Node) {
         self.nodesDone.push(node);
     }

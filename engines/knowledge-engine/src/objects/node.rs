@@ -1,7 +1,5 @@
-use std::{collections::{HashMap}};
-use std::collections::hash_map::Keys;
-use std::collections::{BTreeMap, HashSet};
 use chrono::{DateTime, Local};
+use std::collections::BTreeMap;
 
 use crate::{enumerations::State, objects::edge::Edge};
 
@@ -56,8 +54,8 @@ impl Node {
         let usable_connection = conn.clone();
 
         let connects_to: Vec<Node> = usable_connection.keys().cloned().collect();
-        for mut conn in connects_to{
-            for test in self.connections.iter(){
+        for mut conn in connects_to {
+            for test in self.connections.iter() {
                 conn.connections.push(test.clone());
             }
         }
@@ -65,7 +63,7 @@ impl Node {
         self.connections.push(usable_connection);
     }
 
-    pub fn update_state(&mut self, new_state: State){
+    pub fn update_state(&mut self, new_state: State) {
         self.state = new_state;
     }
 
