@@ -7,7 +7,8 @@ pub enum State {
     FINISHED,
     IN_PROGRESS,
     IN_QUEUE,
-    #[default] NOT_STARTED,
+    #[default]
+    NOT_STARTED,
 }
 
 /// Enum used to define the type of the relationship
