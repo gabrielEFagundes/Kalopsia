@@ -2,7 +2,7 @@
 ///
 /// Always defaults to NOT_STARTED
 #[allow(non_camel_case_types)]
-#[derive(Debug, Clone, Copy, Default)]
+#[derive(Debug, Clone, Copy, Default, Ord, PartialOrd, PartialEq, Eq)]
 pub enum State {
     FINISHED,
     IN_PROGRESS,
@@ -13,7 +13,7 @@ pub enum State {
 /// Enum used to define the type of the relationship
 ///
 /// Does not have a default value
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Ord, PartialOrd, PartialEq, Eq)]
 pub enum Relationship {
     REQUIRED,
     UNLOCKS,
