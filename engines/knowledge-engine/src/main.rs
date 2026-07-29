@@ -1,7 +1,6 @@
 use knowledge_engine::enumerations::Relationship;
 use knowledge_engine::objects::edge::Edge;
 use knowledge_engine::objects::node::Node;
-use std::collections::BTreeMap;
 
 // reminder here to remove all the unecessary debug derives
 fn main() {
