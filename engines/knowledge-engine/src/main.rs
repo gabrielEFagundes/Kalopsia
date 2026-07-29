@@ -8,15 +8,15 @@ fn main() {
     // println!("This is the knowledge engine, and this is also a temporary print.");
     // HOW THE FUCK IS THIS WORKING
     let mut node = Node::new(
-        String::from("Idk"),
+        String::from("NODE NUMBER 1"),
         7,
         20,
         vec!["Skill".to_string(), "Another skill".to_string()],
         vec!["Cool Skill".to_string(), "Idk another skill".to_string()],
     );
 
-    let node2 = Node::new(
-        String::from("Idk n° 2"),
+    let mut node2 = Node::new(
+        String::from("NODE NUMBER 2"),
         10,
         400,
         vec![
@@ -31,9 +31,7 @@ fn main() {
 
     let edge_between_node1and2 = Edge::new(8, Relationship::REQUIRED);
 
-    let mut connection = BTreeMap::new();
-    connection.insert(node2, edge_between_node1and2);
-    node.add_conn(connection);
+    node.add_conn(&mut node2, edge_between_node1and2);
 
-    println!("{:?}", node);
+    println!("\n\n{:#?}", node);
 }

@@ -1,6 +1,6 @@
 use chrono::{DateTime, Local};
 use std::collections::BTreeMap;
-
+use std::process::Command;
 use crate::{enumerations::State, objects::edge::Edge};
 
 /// Main struct used to define a Node for the graph
@@ -49,22 +49,25 @@ impl Node {
     /// Function used to add new connections to the Node, including other Nodes and the edges that connects them
     ///
     /// Updates both the current Node and the connected Node
-    pub fn add_conn(&mut self, conn: BTreeMap<Node, Edge>) {
-        // TODO: fix the performance of this code, holy shit
-        let usable_connection = conn.clone();
+    pub fn add_conn(&mut self, node: &mut Node, edge: Edge) {
+        // TODO: still need to fix of this code
+        let mut conn = BTreeMap::new();
+        conn.insert(node.clone(), edge);
 
-        let connects_to: Vec<Node> = usable_connection.keys().cloned().collect();
-        for mut conn in connects_to {
-            for test in self.connections.iter() {
-                conn.connections.push(test.clone());
-            }
-        }
+        self.connections.push(conn);
 
-        self.connections.push(usable_connection);
+        let mut parent_connection = BTreeMap::new();
+        parent_connection.insert(self.clone(), edge);
+
+        node.connections.push(parent_connection);
     }
 
     pub fn update_state(&mut self, new_state: State) {
         self.state = new_state;
+    }
+
+    pub fn get_connections(&self) -> &Vec<BTreeMap<Node, Edge>> {
+        &self.connections
     }
 
     // maybe an interest decay function?
