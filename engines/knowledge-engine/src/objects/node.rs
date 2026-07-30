@@ -1,7 +1,6 @@
 use crate::{enumerations::State, objects::edge::Edge};
 use chrono::{DateTime, Local};
 use std::collections::BTreeMap;
-use std::fmt;
 
 /// Main struct used to define a Node for the graph
 #[allow(dead_code, non_snake_case)]

@@ -1,10 +1,8 @@
-use std::fmt::Debug;
+use knowledge_engine::data_io;
 use knowledge_engine::enumerations::Relationship;
-use knowledge_engine::objects::dev;
 use knowledge_engine::objects::dev::Dev;
 use knowledge_engine::objects::edge::Edge;
 use knowledge_engine::objects::node::Node;
-use knowledge_engine::data_io;
 
 // reminder here to remove all the unecessary debug derives
 fn main() {

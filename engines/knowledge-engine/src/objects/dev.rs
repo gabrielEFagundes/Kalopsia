@@ -1,4 +1,3 @@
-use std::fmt;
 use crate::objects::node::Node;
 
 /// Main struct for defining the profile of the developer (or person in the future)
@@ -27,7 +26,7 @@ impl Dev {
     }
 
     /// Adds multiple nodes at once to `Dev`
-    pub fn add_nodes(&mut self, new_node: Vec<&Node>){
+    pub fn add_nodes(&mut self, new_node: Vec<&Node>) {
         for node in new_node {
             self.add_node(node.clone());
         }
