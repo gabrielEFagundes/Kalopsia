@@ -1,6 +1,7 @@
 use crate::{enumerations::State, objects::edge::Edge};
 use chrono::{DateTime, Local};
 use std::collections::BTreeMap;
+use std::fmt;
 
 /// Main struct used to define a Node for the graph
 #[allow(dead_code, non_snake_case)]
@@ -20,11 +21,11 @@ pub struct Node {
 impl Node {
     /// Constructor with the required fields to create a node.
     ///
-    /// Default fields:
-    /// - interest: Starts out as 100 and decays according to the Dev currentEntropy value
-    /// - ideaAddedAt: DateTime according to the host's current datetime when a Node is created
-    /// - state: Always defaults to NOT_STARTED
-    /// - connections: Always starts empty and is dynamically allocated
+    /// ### Default fields:
+    /// - `interest`: Starts out as 100 and decays according to the Dev currentEntropy value
+    /// - `ideaAddedAt`: DateTime according to the host's current datetime when a Node is created
+    /// - `state`: Always defaults to NOT_STARTED
+    /// - `connections`: Always starts empty and is dynamically allocated
     pub fn new(
         name: String,
         difficulty: i32,
@@ -61,10 +62,12 @@ impl Node {
         node.connections.push(parent_connection);
     }
 
+    /// Updates the state of a Node. Utilitary method
     pub fn update_state(&mut self, new_state: State) {
         self.state = new_state;
     }
 
+    /// Returns the connections from the Node. Utilitary method
     pub fn get_connections(&self) -> &Vec<BTreeMap<Node, Edge>> {
         &self.connections
     }
