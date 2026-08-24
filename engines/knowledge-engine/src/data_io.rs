@@ -3,26 +3,15 @@ use std::io::Write;
 
 const PATH: &str = "Kalopsia-Steps/data";
 
-/// Writes data into a specified file.
-///
-/// ### Parameters:
-/// - `data: T` -> Generic data, specifically used for `Dev`, `Node` and `Edge` cases.
-/// - `file: &str` -> The name of the file to be written into, PATH to be written to is hardcoded but will soon be a configuration.
-pub fn writef<T: std::fmt::Debug>(data: T, file: &str) {
-    let mut create_file_if_doesnt_exist = File::create(format!("{}/{}", PATH, file)).unwrap();
-
-    match create_file_if_doesnt_exist.write_all(format!("{:#?}\n", data).as_bytes()) {
-        Ok(_) => println!("[INFO] Wrote to file '{}/{}'", PATH, file),
-        Err(_) => panic!("[ERROR] Could not write to file '{:#?}'", file),
-    }
-}
-
 /// Appends data into a specified file.
 ///
+/// Creates the specified file if it doesn't exist.
 /// ### Parameters:
 /// - `data: T` -> Generic data, specifically used for `Dev`, `Node` and `Edge` cases.
 /// - `file: &str` -> The name of the file to be appended into.
 pub fn appendf<T: std::fmt::Debug>(data: T, file: &str) {
+    File::create(format!("{}/{}", PATH, file)).unwrap();
+
     match File::options()
         .append(true)
         .open(format!("{}/{}", PATH, file))
