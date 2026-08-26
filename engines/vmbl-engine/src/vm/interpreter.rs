@@ -1,9 +1,9 @@
-use std::default;
+use core::panic;
 
-use crate::{dictionary::{self, Bytecode}, vm::{constants::{self, interpret_double_byte, interpret_int_byte, interpret_string_byte}, interpreter, utils}};
+use crate::{dictionary::{ByteTokenType, ValueType, as_bytetokentype}, vm::{constants::{interpret_double_byte, interpret_int_byte, interpret_string_byte}, utils}};
 
 pub struct Interpreter{
-    pub constants: Vec<u8>,
+    pub constants: Vec<ValueType>,
     pub bytes: Vec<u8>,
     pub cursor: u32
 }
@@ -14,25 +14,47 @@ impl Interpreter{
         Interpreter { constants: Vec::new(), bytes, cursor: 0 }
     }
 
-    fn read(amount: u8){
-        
+    pub fn read(&mut self) -> u8{
+        self.cursor+=1;
+        return self.bytes[self.cursor as usize];
     }
 
-    fn mount_buffered_constants(&mut self, usable_bytes: &Vec<u8>){
-        let entries_to_read = u16::from_be_bytes([usable_bytes[1], usable_bytes[0]]); // the first element will always be the constants count on .ksc files
+    fn read_amount(&mut self, amount: u32) -> u8{
+        self.cursor += amount;
+        return self.bytes[self.cursor as usize];
+    }
 
-        for i in 0..entries_to_read{
-            match usable_bytes[i] {
-                11 => {
-                    interpret_string_byte();
+    fn mount_buffered_constants(&mut self){
+        let first_byte = self.bytes[self.cursor as usize];
+        self.read();
+
+        let entries_to_read = u16::from_be_bytes([self.bytes[self.cursor as usize], first_byte]);
+        self.read();
+
+        for _i in 0..=entries_to_read as usize{
+            match as_bytetokentype(self.bytes[self.cursor as usize]) {
+                ByteTokenType::STRING => {
+                    self.read();
+                    let str_length = self.bytes[self.cursor as usize];
+                    let val = ValueType::Str(interpret_string_byte(self, str_length));
+                    self.constants.push(val);
+                    self.read();
                 },
-                22 => {
-                    interpret_int_byte();
+
+                ByteTokenType::INT => {
+                    self.read();
+                    let val = ValueType::Int(interpret_int_byte(self));
+                    self.constants.push(val);
                 },
-                33 => {
-                    interpret_double_byte()
+
+                ByteTokenType::DOUBLE => {
+                    self.read();
+                    let val = ValueType::Double(interpret_double_byte(self));
+                    self.constants.push(val);
                 },
-                _ => println!("{}", i)
+                
+                _ => break
+                
             }
         }
     }
@@ -47,12 +69,13 @@ impl Interpreter{
             panic!("[ERROR] bytecode is invalid.\nhave you compiled it through VMBL?");
         }
 
-        let useful_bytes: &[u8] = &self.bytes.clone()[4 .. self.bytes.len()]; // creates a slice without the headers
+        self.read_amount(4);
         
-        if self.constants.is_empty(){ self.mount_buffered_constants(&useful_bytes.to_vec()); }
+        if self.constants.is_empty(){ self.mount_buffered_constants(); }
+        println!("{:#?}", self.constants);
 
-        for b in useful_bytes{
-            self.interpret_instruct(*b);
-        }
+        // for b in self.bytes{
+        //     self.interpret_instruct(*b);
+        // }
     }
 }

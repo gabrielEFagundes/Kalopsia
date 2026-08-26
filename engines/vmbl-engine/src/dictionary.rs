@@ -18,3 +18,28 @@ pub enum Bytecode{
     PUSH = 0x50,
     MK_ARRAY = 0x70,
 }
+
+#[derive(Debug)]
+pub enum ValueType{
+    Str(String),
+    Int(i32),
+    Double(f64)
+}
+
+#[repr(u8)]
+pub enum ByteTokenType{
+    STRING = 0x11,
+    INT = 0x22,
+    DOUBLE = 0x33,
+    DEAD = 0x00
+}
+
+/// Just maps an `u8` to a `ByteTokenType`
+pub fn as_bytetokentype(v: u8) -> ByteTokenType{
+    match v {
+        0x11 => ByteTokenType::STRING,
+        0x22 => ByteTokenType::INT,
+        0x33 => ByteTokenType::DOUBLE,
+        _ => ByteTokenType::DEAD
+    }
+}
