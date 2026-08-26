@@ -1,11 +1,11 @@
 use knowledge_engine::data_io;
 use knowledge_engine::enumerations::Relationship;
-use knowledge_engine::objects::obj::Dev;
+use knowledge_engine::objects::obj::Obj;
 use knowledge_engine::objects::edge::Edge;
 use knowledge_engine::objects::node::Node;
 
 fn main() {
-    let mut dev = Dev::new(vec!["Skill 1".to_string(), "Skill 2".to_string()]);
+    let mut dev = Obj::new(vec!["Skill 1".to_string(), "Skill 2".to_string()]);
 
     let mut node = Node::new(
         String::from("NODE NUMBER 1"),

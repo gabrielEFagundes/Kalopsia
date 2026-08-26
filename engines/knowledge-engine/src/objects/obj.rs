@@ -1,14 +1,16 @@
 use crate::objects::node::Node;
 
-/// Main struct for defining the profile of the developer (or person in the future)
-#[allow(non_snake_case)]
+/// Main struct for defining an external object (not part of the graph).
+/// 
+/// Used mostly for defining the person, in case of Kalopsia's v1.
+#[allow(non_snake_case, dead_code)]
 #[derive(Clone, Debug)]
-pub struct Dev {
+pub struct Obj {
     nodesDone: Vec<Node>,
     skills: Vec<String>, //currConfidence: HashMap<Node, i32> I need to study the ways I can do this
 }
 
-impl Dev {
+impl Obj {
     /// Constructor to create a new Dev profile
     ///
     /// ### Default fields:
@@ -20,7 +22,7 @@ impl Dev {
         }
     }
 
-    /// Adds a node to `Dev`
+    /// Adds a node to `Obj`
     pub fn add_node(&mut self, node: Node) {
         self.nodesDone.push(node);
     }

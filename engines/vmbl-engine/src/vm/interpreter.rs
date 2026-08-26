@@ -1,6 +1,6 @@
 use core::panic;
 
-use crate::{dictionary::{ByteTokenType, ValueType, as_bytetokentype}, vm::{constants::{interpret_double_byte, interpret_int_byte, interpret_string_byte}, utils}};
+use crate::{dictionary::{ByteTokenType, Bytecode, ValueType, as_bytecode, as_bytetokentype}, vm::{constants::{interpret_double_byte, interpret_int_byte, interpret_string_byte}, utils}};
 
 pub struct Interpreter{
     pub constants: Vec<ValueType>,
@@ -52,30 +52,82 @@ impl Interpreter{
                     let val = ValueType::Double(interpret_double_byte(self));
                     self.constants.push(val);
                 },
-                
+
                 _ => break
-                
             }
         }
     }
 
-    fn interpret_instruct(&mut self, byte: u8){
-        println!("{:2x?}", self.constants);
+    fn interpret_instruct(&mut self){
+        let mut stack_indexes: Vec<ValueType> = Vec::new();
+
+        while self.cursor < self.bytes.len() as u32{
+            match as_bytecode(self.bytes[self.cursor as usize]) {
+                Bytecode::PUSH => {
+                    self.read();
+                    stack_indexes.push(self.constants[self.bytes[self.cursor as usize] as usize].clone());
+
+                    self.read();
+                },
+
+                Bytecode::DEFINE => {
+                    println!("DEFINE");
+                    break;
+                },
+
+                Bytecode::QUERY => {
+                    println!("QUERY");
+                    break;
+                },
+
+                Bytecode::NODE => {
+                    stack_indexes.clear();
+                    break;
+                },
+
+                Bytecode::OBJ => {
+                    stack_indexes.clear();
+                    break;
+                },
+
+                Bytecode::PATH => {
+                    println!("PATH");
+                    break;
+                },
+
+                Bytecode::MK_ARRAY => {
+                    self.read();
+                    
+                    let count = self.bytes[self.cursor as usize];
+                    let mut _disposable_arr: Vec<ValueType> = Vec::new();
+                    for _i in 0..count{
+                        _disposable_arr.push(stack_indexes.pop().unwrap().clone());
+                    }
+                    stack_indexes.push(ValueType::Vec(_disposable_arr));
+
+                    self.read();
+                },
+
+                _ => {
+                    println!("[DEBUG] Stopped at {}", self.bytes[self.cursor as usize]);
+                    break;
+                }
+            }
+        }
+        println!("[DEBUG] non cleared pushed array: {:#?}", stack_indexes);
     }
 
     pub fn interpret(&mut self){
 
         if !utils::is_bytecode_valid(&self.bytes){
-            panic!("[ERROR] bytecode is invalid.\nhave you compiled it through VMBL?");
+            panic!("[ERROR] bytecode is invalid.\nhave you compiled it through a compatible version of VMBL?");
         }
 
         self.read_amount(4);
         
         if self.constants.is_empty(){ self.mount_buffered_constants(); }
-        println!("{:#?}", self.constants);
+        //println!("{:#?}", self.constants);
 
-        // for b in self.bytes{
-        //     self.interpret_instruct(*b);
-        // }
+        self.interpret_instruct();
     }
 }
