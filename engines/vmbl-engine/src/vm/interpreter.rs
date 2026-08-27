@@ -98,9 +98,9 @@ impl Interpreter{
                 Bytecode::QUERY => {
                     self.read();
                     let current_byte_type = self.bytes[self.cursor as usize];
+                    // yet to implement, working on parser for saving file, uh
 
                     'node: {
-                        
                         break 'node;
                     }
 

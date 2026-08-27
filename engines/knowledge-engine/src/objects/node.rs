@@ -4,8 +4,8 @@ use lib::orderedf64::Orderedf64;
 use std::collections::BTreeMap;
 
 /// Main struct used to define a Node for the graph
-#[allow(dead_code, non_snake_case)]
-#[derive(Debug, Clone, Default, Ord, PartialOrd, Eq, PartialEq)]
+#[allow(non_snake_case)]
+#[derive(Clone, Default, Ord, PartialOrd, Eq, PartialEq)]
 pub struct Node {
     pub name: String,
     pub difficulty: Orderedf64,

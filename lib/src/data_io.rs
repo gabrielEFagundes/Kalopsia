@@ -9,13 +9,13 @@ const PATH: &str = "Kalopsia-Steps/data";
 /// ### Parameters:
 /// - `data: T` -> Generic data, specifically used for `Dev`, `Node` and `Edge` cases.
 /// - `file: &str` -> The name of the file to be appended into.
-pub fn appendf<T: std::fmt::Debug>(data: T, file: &str) {
+pub fn appendf<T: std::fmt::Display>(data: T, file: &str) {
     File::create(format!("{}/{}", PATH, file)).unwrap();
 
     match File::options()
         .append(true)
         .open(format!("{}/{}", PATH, file))
-        .and_then(|mut f| writeln!(f, "{:#?}", data))
+        .and_then(|mut f| writeln!(f, "{}", data))
     {
         Ok(_) => println!("[INFO] Appended to file '{}/{}'", PATH, file),
         Err(_) => panic!("[ERROR] Could not append to file '{:#?}'", file),
@@ -29,8 +29,8 @@ pub fn appendf<T: std::fmt::Debug>(data: T, file: &str) {
 /// - `file: &str` -> The name of the file to be deleted.
 pub fn deletef<T>(_data: T, file: &str) {
     match std::fs::remove_file(format!("{}/{}", PATH, file)) {
-        Ok(_) => println!("[INFO] Deleted file '{:#?}'", file),
-        Err(why) => panic!("[ERROR] Could not delete file '{:#?}': {}", file, why),
+        Ok(_) => println!("[INFO] Deleted file '{}'", file),
+        Err(why) => panic!("[ERROR] Could not delete file '{}': {}", file, why),
     }
 }
 

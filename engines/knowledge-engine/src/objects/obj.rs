@@ -4,7 +4,7 @@ use crate::objects::node::Node;
 /// 
 /// Used mostly for defining the person, in case of Kalopsia's v1.
 #[allow(non_snake_case, dead_code)]
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub struct Obj {
     nodesDone: Vec<Node>,
     skills: Vec<String>, //currConfidence: HashMap<Node, i32> I need to study the ways I can do this

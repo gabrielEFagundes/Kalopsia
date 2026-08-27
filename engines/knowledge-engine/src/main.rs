@@ -1,3 +1,5 @@
+use std::fmt::Debug;
+
 use lib::data_io;
 use knowledge_engine::enumerations::Relationship;
 use knowledge_engine::objects::obj::Obj;
