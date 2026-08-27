@@ -1,6 +1,6 @@
 use core::panic;
 
-use crate::{dictionary::{ByteTokenType, Bytecode, ValueType, as_bytecode, as_bytetokentype}, vm::{constants::{interpret_double_byte, interpret_int_byte, interpret_string_byte}, utils}};
+use crate::{dictionary::{ByteTokenType, Bytecode, ValueType, as_bytecode, as_bytetokentype}, vm::{constants::{interpret_double_byte, interpret_int_byte, interpret_string_byte}, interactions::{create_node, create_obj}, utils}};
 
 pub struct Interpreter{
     pub constants: Vec<ValueType>,
@@ -71,23 +71,50 @@ impl Interpreter{
                 },
 
                 Bytecode::DEFINE => {
-                    println!("DEFINE");
-                    break;
+                    self.read();
+                    let current_byte_type = self.bytes[self.cursor as usize];
+
+                    'node: {
+                        if current_byte_type == Bytecode::OBJ as u8{ break 'node; }
+
+                        self.read();
+                        create_node(&mut stack_indexes);
+
+                        self.read();
+                        break 'node;
+                    };
+
+                    'obj: {
+                        if current_byte_type == Bytecode::NODE as u8{ break 'obj; } // maybe an overhead, but works and is safe
+
+                        self.read();
+                        create_obj(&mut stack_indexes);
+
+                        self.read();
+                        break 'obj;
+                    };
                 },
 
                 Bytecode::QUERY => {
-                    println!("QUERY");
-                    break;
-                },
+                    self.read();
+                    let current_byte_type = self.bytes[self.cursor as usize];
 
-                Bytecode::NODE => {
-                    stack_indexes.clear();
-                    break;
-                },
+                    'node: {
+                        
+                        break 'node;
+                    }
 
-                Bytecode::OBJ => {
-                    stack_indexes.clear();
-                    break;
+                    'obj: {
+                        break 'obj;
+                    }
+                    
+                    'path: {
+                        break 'path;
+                    }
+
+                    'next: {
+                        break 'next;
+                    }
                 },
 
                 Bytecode::PATH => {
@@ -114,7 +141,7 @@ impl Interpreter{
                 }
             }
         }
-        println!("[DEBUG] non cleared pushed array: {:#?}", stack_indexes);
+        println!("[DEBUG] cleared pushed array: {:#?}", stack_indexes);
     }
 
     pub fn interpret(&mut self){

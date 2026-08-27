@@ -132,7 +132,12 @@ name = "knowledge-engine"
 version = "0.1.0"
 dependencies = [
  "chrono",
+ "lib",
 ]
+
+[[package]]
+name = "lib"
+version = "0.1.0"
 
 [[package]]
 name = "libc"
@@ -229,6 +234,7 @@ name = "vmbl-engine"
 version = "0.1.0"
 dependencies = [
  "knowledge-engine",
+ "lib",
 ]
 
 [[package]]

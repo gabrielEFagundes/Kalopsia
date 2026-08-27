@@ -5,3 +5,4 @@ edition = "2024"
 
 [dependencies]
 knowledge-engine = {path = "../knowledge-engine"}
+lib = {path = "../../lib"}

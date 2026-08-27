@@ -1,4 +1,7 @@
-use crate::dictionary::Bytecode;
+
+use std::collections::HashMap;
+
+use crate::dictionary::{Bytecode, ValueType};
 
 pub fn is_bytecode_valid(bytes: &[u8]) -> bool{
     let expect_magic_num = u16::from_be_bytes([bytes[1], bytes[0]]) == Bytecode::MAGIC_NUM as u16;
@@ -6,4 +9,29 @@ pub fn is_bytecode_valid(bytes: &[u8]) -> bool{
     // maybe add more verifiers, such as constants count, incase more safety is necessary.
 
     return expect_magic_num && expect_version;
+}
+
+pub fn map_node_vals(mut stack: HashMap<String, ValueType>) -> (String, f64, i32, Vec<String>, Vec<String>){
+    let name = stack.remove("name").unwrap().as_str();
+    let difficulty = stack.remove("difficulty").unwrap().as_double();
+    let hours = stack.remove("hours").unwrap().as_int();
+    let req_skills = stack.remove("req_skills").unwrap().as_vec();
+    let gain_skills = stack.remove("gain_skills").unwrap().as_vec();
+
+    return (
+        name, 
+        difficulty, 
+        hours, 
+        req_skills.into_iter().map(|v| v.as_str()).collect(), 
+        gain_skills.into_iter().map(|v| v.as_str()).collect()
+    )
+}
+
+pub fn map_obj_vals(mut stack: HashMap<String, ValueType>) -> Vec<String>{
+    return stack.remove("skills")
+            .unwrap()
+            .as_vec()
+            .into_iter()
+            .map(|v| v.as_str())
+            .collect();
 }

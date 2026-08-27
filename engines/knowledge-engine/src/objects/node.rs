@@ -1,5 +1,6 @@
 use crate::{enumerations::State, objects::edge::Edge};
 use chrono::{DateTime, Local};
+use lib::orderedf64::Orderedf64;
 use std::collections::BTreeMap;
 
 /// Main struct used to define a Node for the graph
@@ -7,7 +8,7 @@ use std::collections::BTreeMap;
 #[derive(Debug, Clone, Default, Ord, PartialOrd, Eq, PartialEq)]
 pub struct Node {
     pub name: String,
-    pub difficulty: i32,
+    pub difficulty: Orderedf64,
     pub hours: i32,
     pub reqSkills: Vec<String>,
     pub gainSkills: Vec<String>,
@@ -27,7 +28,7 @@ impl Node {
     /// - `connections`: Always starts empty and is dynamically allocated
     pub fn new(
         name: String,
-        difficulty: i32,
+        difficulty: Orderedf64,
         hours: i32,
         req_skills: Vec<String>,
         gain_skills: Vec<String>,
