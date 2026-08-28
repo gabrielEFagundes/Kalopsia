@@ -3,7 +3,7 @@ use crate::objects::node::Node;
 /// Main struct for defining an external object (not part of the graph).
 /// 
 /// Used mostly for defining the person, in case of Kalopsia's v1.
-#[allow(non_snake_case, dead_code)]
+#[allow(non_snake_case)]
 #[derive(Clone)]
 pub struct Obj {
     nodesDone: Vec<Node>,
@@ -33,4 +33,8 @@ impl Obj {
             self.add_node(node.clone());
         }
     }
+
+    pub fn nodes_done(&self) -> &Vec<Node>{ &self.nodesDone }
+
+    pub fn skills(&self) -> &Vec<String>{ &self.skills }
 }

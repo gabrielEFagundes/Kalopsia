@@ -1,36 +1,35 @@
 use std::fs::File;
-use std::io::Write;
+use std::io::{BufWriter, Write};
 
 const PATH: &str = "Kalopsia-Steps/data";
 
 /// Appends data into a specified file.
 ///
 /// Creates the specified file if it doesn't exist.
-/// ### Parameters:
-/// - `data: T` -> Generic data, specifically used for `Dev`, `Node` and `Edge` cases.
-/// - `file: &str` -> The name of the file to be appended into.
-pub fn appendf<T: std::fmt::Display>(data: T, file: &str) {
-    File::create(format!("{}/{}", PATH, file)).unwrap();
+pub fn appendf(data: &[u8], path: &str) -> std::io::Result<()> {
+    println!("[DEBUG] entered appendf");
 
-    match File::options()
-        .append(true)
-        .open(format!("{}/{}", PATH, file))
-        .and_then(|mut f| writeln!(f, "{}", data))
-    {
-        Ok(_) => println!("[INFO] Appended to file '{}/{}'", PATH, file),
-        Err(_) => panic!("[ERROR] Could not append to file '{:#?}'", file),
+    let file = File::create(path);
+    let mut buf_writer = BufWriter::new(file.unwrap());
+
+    match buf_writer.write_all(data) {
+        Ok(()) => {
+            buf_writer.flush()?;
+            println!("match OK");
+            Ok(())
+        },
+        Err(why) => {
+            buf_writer.flush()?;
+            panic!("[ERROR] could not append to file.\nreason: '{}'", why)
+        }
     }
 }
 
-/// Deletes data from a specified file.
-///
-/// ### Parameters:
-/// - `data: T` -> Generic data, specifically used for `Dev`, `Node` and `Edge` cases.
-/// - `file: &str` -> The name of the file to be deleted.
+/// Deletes a specified file.
 pub fn deletef<T>(_data: T, file: &str) {
     match std::fs::remove_file(format!("{}/{}", PATH, file)) {
-        Ok(_) => println!("[INFO] Deleted file '{}'", file),
-        Err(why) => panic!("[ERROR] Could not delete file '{}': {}", file, why),
+        Ok(_) => println!("[INFO] deleted file '{}'", file),
+        Err(why) => panic!("[ERROR] could not delete file '{}': {}", file, why),
     }
 }
 

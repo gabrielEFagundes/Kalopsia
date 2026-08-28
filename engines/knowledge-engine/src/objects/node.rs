@@ -1,12 +1,14 @@
 use crate::{enumerations::State, objects::edge::Edge};
 use chrono::{DateTime, Local};
-use lib::orderedf64::Orderedf64;
+use lib::id_engine::list_builder::Identifier;
+use shared::orderedf64::Orderedf64;
 use std::collections::BTreeMap;
 
 /// Main struct used to define a Node for the graph
 #[allow(non_snake_case)]
 #[derive(Clone, Default, Ord, PartialOrd, Eq, PartialEq)]
 pub struct Node {
+    pub id: Identifier,
     pub name: String,
     pub difficulty: Orderedf64,
     pub hours: i32,
@@ -15,7 +17,7 @@ pub struct Node {
     interest: i32,
     ideaAddedAt: DateTime<Local>,
     state: State,
-    connections: Vec<BTreeMap<Node, Edge>>,
+    connections: Vec<BTreeMap<Identifier, Edge>>,
 }
 
 impl Node {
@@ -34,6 +36,7 @@ impl Node {
         gain_skills: Vec<String>,
     ) -> Self {
         Self {
+            id: Identifier(0), //tmp
             name,
             difficulty,
             hours,
@@ -51,13 +54,13 @@ impl Node {
     /// Updates both the current Node and the connected Node
     pub fn add_conn(&mut self, node: &mut Node, edge: Edge) {
         // TODO: still need to fix of this code
-        let mut conn = BTreeMap::new();
-        conn.insert(node.clone(), edge);
+        let mut conn: BTreeMap<Identifier, Edge> = BTreeMap::new();
+        conn.insert(node.clone().id, edge);
 
         self.connections.push(conn);
 
         let mut parent_connection = BTreeMap::new();
-        parent_connection.insert(self.clone(), edge);
+        parent_connection.insert(self.clone().id, edge);
 
         node.connections.push(parent_connection);
     }
@@ -67,8 +70,17 @@ impl Node {
         self.state = new_state;
     }
 
-    /// Returns the connections from the Node. Utilitary method
-    pub fn get_connections(&self) -> &Vec<BTreeMap<Node, Edge>> {
+    /// Getter for read-only access to interest field.
+    pub fn interest(&self) -> i32{ self.interest }
+
+    /// Getter for read-only access to ideaAddedAt field.
+    pub fn idea_added_at(&self) -> DateTime<Local>{ self.ideaAddedAt }
+
+    /// Getter for read-only access to state field.
+    pub fn state(&self) -> State{ self.state }
+
+    /// Getter for read-only access to connections field.
+    pub fn connections(&self) -> &Vec<BTreeMap<Identifier, Edge>> {
         &self.connections
     }
 

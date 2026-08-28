@@ -1,4 +1,14 @@
-use crate::dictionary::ValueType;
+pub type BYTE = u8;
+
+#[derive(Debug, Clone)]
+pub enum ValueType{
+    Str(String),
+    Int(i32),
+    Double(f64),
+    Vec(Vec<ValueType>),
+
+    Default
+}
 
 impl ValueType{
     pub fn as_str(self) -> String{
