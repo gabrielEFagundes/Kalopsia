@@ -16,14 +16,6 @@ pub enum Bytecode{
     DEAD = 0x00 // unreachable code
 }
 
-#[derive(Debug, Clone)]
-pub enum ValueType{
-    Str(String),
-    Int(i32),
-    Double(f64),
-    Vec(Vec<ValueType>)
-}
-
 #[repr(u8)]
 pub enum ByteTokenType{
     STRING = 0x11,

@@ -1,6 +1,6 @@
 use core::panic;
-
-use crate::{dictionary::{ByteTokenType, Bytecode, ValueType, as_bytecode, as_bytetokentype}, vm::{constants::{interpret_double_byte, interpret_int_byte, interpret_string_byte}, interactions::{create_node, create_obj}, utils}};
+use shared::data_types::ValueType;
+use crate::{dictionary::{ByteTokenType, Bytecode, as_bytecode, as_bytetokentype}, vm::{constants::{interpret_double_byte, interpret_int_byte, interpret_string_byte}, interactions::{create_node, create_obj}, utils}};
 
 pub struct Interpreter{
     pub constants: Vec<ValueType>,
@@ -98,9 +98,9 @@ impl Interpreter{
                 Bytecode::QUERY => {
                     self.read();
                     let current_byte_type = self.bytes[self.cursor as usize];
+                    // yet to implement, working on parser for saving file, uh
 
                     'node: {
-                        
                         break 'node;
                     }
 

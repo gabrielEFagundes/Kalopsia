@@ -1,9 +1,10 @@
 use std::collections::HashMap;
 
 use knowledge_engine::objects::{node::Node, obj::Obj};
-use lib::orderedf64::Orderedf64;
+use shared::orderedf64::Orderedf64;
+use shared::data_types::ValueType;
 
-use crate::{dictionary::ValueType::{self}, vm::utils::{map_node_vals, map_obj_vals}};
+use crate::vm::utils::{map_node_vals, map_obj_vals};
 
 pub fn create_node(stack_arr: &mut Vec<ValueType>) -> Node{
     let mut mapped_vals: HashMap<String, ValueType> = HashMap::new();

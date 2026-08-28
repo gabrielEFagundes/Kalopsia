@@ -1,9 +1,10 @@
-use lib::data_io;
 use knowledge_engine::enumerations::Relationship;
 use knowledge_engine::objects::obj::Obj;
 use knowledge_engine::objects::edge::Edge;
 use knowledge_engine::objects::node::Node;
-use lib::orderedf64::Orderedf64;
+use lib::data_io;
+use lib::ss_engine::serializer::Serializer;
+use shared::orderedf64::Orderedf64;
 
 /// ## TEST FUNCTION
 /// For the Knowledge Engine, this is not used by the main Kalopsia software.
@@ -39,6 +40,9 @@ fn main() {
     node.add_conn(&mut node2, edge_between_node1and2);
     dev.add_nodes(vec![&node, &node2]);
 
-    data_io::appendf(node2, "graph.hjson");
+    let mut buffer: Vec<shared::data_types::BYTE> = Vec::new();
+    node.serialize(&mut buffer);
+
+    _ = data_io::appendf(&buffer, "../../../Kalopsia-Steps/data/graph.bin");
 
 }

@@ -1,7 +1,6 @@
-
 use std::collections::HashMap;
-
-use crate::dictionary::{Bytecode, ValueType};
+use shared::data_types::ValueType;
+use crate::dictionary::Bytecode;
 
 pub fn is_bytecode_valid(bytes: &[u8]) -> bool{
     let expect_magic_num = u16::from_be_bytes([bytes[1], bytes[0]]) == Bytecode::MAGIC_NUM as u16;
