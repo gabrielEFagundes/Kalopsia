@@ -3,6 +3,7 @@ use knowledge_engine::objects::obj::Obj;
 use knowledge_engine::objects::edge::Edge;
 use knowledge_engine::objects::node::Node;
 use lib::data_io;
+use shared::debug;
 use lib::ss_engine::serializer::Serializer;
 use shared::orderedf64::Orderedf64;
 
@@ -43,6 +44,9 @@ fn main() {
     let mut buffer: Vec<shared::data_types::BYTE> = Vec::new();
     node.serialize(&mut buffer);
 
-    _ = data_io::appendf(&buffer, "../../../Kalopsia-Steps/data/graph.bin");
+    _ = data_io::appendf(&buffer, "./test-data.bin/graph.bin");
+
+    let serialized_node = &mut data_io::readf("./test-data.bin/graph.bin");
+    debug!("{:#?}", Node::deserialize(serialized_node, &mut 0));
 
 }

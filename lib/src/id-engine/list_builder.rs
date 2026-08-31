@@ -1,4 +1,4 @@
-#[derive(Clone, Default, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Identifier(pub i32);
 
 impl Identifier{

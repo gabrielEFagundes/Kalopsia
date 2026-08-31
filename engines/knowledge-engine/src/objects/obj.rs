@@ -4,9 +4,9 @@ use crate::objects::node::Node;
 /// 
 /// Used mostly for defining the person, in case of Kalopsia's v1.
 #[allow(non_snake_case)]
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct Obj {
-    nodesDone: Vec<Node>,
+    nodes_done: Vec<Node>,
     skills: Vec<String>, //currConfidence: HashMap<Node, i32> I need to study the ways I can do this
 }
 
@@ -17,14 +17,18 @@ impl Obj {
     /// - `nodesDone`: Always starts empty and gets added dynamically
     pub fn new(skills: Vec<String>) -> Self {
         Self {
-            nodesDone: Vec::new(),
+            nodes_done: Vec::new(),
             skills,
         }
     }
 
+    pub fn from(nodes_done: Vec<Node>, skills: Vec<String>) -> Self{
+        Self { nodes_done, skills }
+    }
+
     /// Adds a node to `Obj`
     pub fn add_node(&mut self, node: Node) {
-        self.nodesDone.push(node);
+        self.nodes_done.push(node);
     }
 
     /// Adds multiple nodes at once to `Dev`
@@ -34,7 +38,7 @@ impl Obj {
         }
     }
 
-    pub fn nodes_done(&self) -> &Vec<Node>{ &self.nodesDone }
+    pub fn nodes_done(&self) -> &Vec<Node>{ &self.nodes_done }
 
     pub fn skills(&self) -> &Vec<String>{ &self.skills }
 }
