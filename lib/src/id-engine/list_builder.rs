@@ -1,12 +1,12 @@
-#[derive(Clone, Default, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Identifier(pub i32);
 
-impl Identifier{
-    fn build(&mut self) -> Self{
+impl Identifier {
+    fn build(&mut self) -> Self {
         todo!()
     }
 
-    fn free(&self){
+    fn free(&self) {
         todo!()
     }
 }

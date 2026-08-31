@@ -16,7 +16,11 @@ impl Edge {
         }
     }
 
-    pub fn weight(&self) -> i32{ self.weight }
+    pub fn weight(&self) -> i32 {
+        self.weight
+    }
 
-    pub fn relationship(&self) -> Relationship{ self.relationship }
+    pub fn relationship(&self) -> Relationship {
+        self.relationship
+    }
 }

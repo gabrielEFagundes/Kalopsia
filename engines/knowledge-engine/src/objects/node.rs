@@ -6,16 +6,16 @@ use std::collections::BTreeMap;
 
 /// Main struct used to define a Node for the graph
 #[allow(non_snake_case)]
-#[derive(Clone, Default, Ord, PartialOrd, Eq, PartialEq)]
+#[derive(Debug, Clone, Default, Ord, PartialOrd, Eq, PartialEq)]
 pub struct Node {
     pub id: Identifier,
     pub name: String,
     pub difficulty: Orderedf64,
     pub hours: i32,
-    pub reqSkills: Vec<String>,
-    pub gainSkills: Vec<String>,
+    pub req_skills: Vec<String>,
+    pub gain_skills: Vec<String>,
     interest: i32,
-    ideaAddedAt: DateTime<Local>,
+    idea_added_at: DateTime<Local>,
     state: State,
     connections: Vec<BTreeMap<Identifier, Edge>>,
 }
@@ -36,16 +36,42 @@ impl Node {
         gain_skills: Vec<String>,
     ) -> Self {
         Self {
-            id: Identifier(0), //tmp
+            id: Identifier(1), //tmp
             name,
             difficulty,
             hours,
-            reqSkills: req_skills,
-            gainSkills: gain_skills,
+            req_skills,
+            gain_skills,
             interest: 100,
-            ideaAddedAt: Local::now(), // now.
-            state: State::NOT_STARTED, // starts as NOT_STARTED
-            connections: Vec::new(),   // will not have connections when initializing
+            idea_added_at: Local::now(), // now.
+            state: State::NOT_STARTED,   // starts as NOT_STARTED
+            connections: Vec::new(),     // will not have connections when initializing
+        }
+    }
+
+    pub fn from(
+        id: Identifier,
+        name: String,
+        difficulty: Orderedf64,
+        hours: i32,
+        req_skills: Vec<String>,
+        gain_skills: Vec<String>,
+        interest: i32,
+        idea_added_at: DateTime<Local>,
+        state: State,
+        connections: Vec<BTreeMap<Identifier, Edge>>,
+    ) -> Self {
+        Self {
+            id,
+            name,
+            difficulty,
+            hours,
+            req_skills,
+            gain_skills,
+            interest,
+            idea_added_at,
+            state,
+            connections,
         }
     }
 
@@ -71,13 +97,19 @@ impl Node {
     }
 
     /// Getter for read-only access to interest field.
-    pub fn interest(&self) -> i32{ self.interest }
+    pub fn interest(&self) -> i32 {
+        self.interest
+    }
 
     /// Getter for read-only access to ideaAddedAt field.
-    pub fn idea_added_at(&self) -> DateTime<Local>{ self.ideaAddedAt }
+    pub fn idea_added_at(&self) -> DateTime<Local> {
+        self.idea_added_at
+    }
 
     /// Getter for read-only access to state field.
-    pub fn state(&self) -> State{ self.state }
+    pub fn state(&self) -> State {
+        self.state
+    }
 
     /// Getter for read-only access to connections field.
     pub fn connections(&self) -> &Vec<BTreeMap<Identifier, Edge>> {
