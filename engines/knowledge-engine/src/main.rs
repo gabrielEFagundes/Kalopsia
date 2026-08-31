@@ -1,15 +1,15 @@
 use knowledge_engine::enumerations::Relationship;
-use knowledge_engine::objects::obj::Obj;
 use knowledge_engine::objects::edge::Edge;
 use knowledge_engine::objects::node::Node;
+use knowledge_engine::objects::obj::Obj;
 use lib::data_io;
-use shared::debug;
 use lib::ss_engine::serializer::Serializer;
+use shared::debug;
 use shared::orderedf64::Orderedf64;
 
 /// ## TEST FUNCTION
 /// For the Knowledge Engine, this is not used by the main Kalopsia software.
-/// 
+///
 /// Simply ignore this file if you're not here to test this specific module.
 fn main() {
     let mut dev = Obj::new(vec!["Skill 1".to_string(), "Skill 2".to_string()]);
@@ -48,5 +48,4 @@ fn main() {
 
     let serialized_node = &mut data_io::readf("./test-data.bin/graph.bin");
     debug!("{:#?}", Node::deserialize(serialized_node, &mut 0));
-
 }

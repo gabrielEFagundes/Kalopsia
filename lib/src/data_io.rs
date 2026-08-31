@@ -16,7 +16,7 @@ pub fn appendf(data: &[u8], path: &str) -> std::io::Result<()> {
         Ok(()) => {
             buf_writer.flush()?;
             Ok(())
-        },
+        }
         Err(why) => {
             buf_writer.flush()?;
             panic!("[ERROR] could not append to file.\nreason: '{}'", why)
@@ -24,12 +24,12 @@ pub fn appendf(data: &[u8], path: &str) -> std::io::Result<()> {
     }
 }
 
-pub fn readf(path: &str) -> Vec<BYTE>{
+pub fn readf(path: &str) -> Vec<BYTE> {
     let content = fs::read(path);
 
-    match content{
+    match content {
         Ok(_) => content.unwrap(),
-        Err(why) => panic!("[ERROR] could not read file.\nreason: '{}'", why)
+        Err(why) => panic!("[ERROR] could not read file.\nreason: '{}'", why),
     }
 }
 

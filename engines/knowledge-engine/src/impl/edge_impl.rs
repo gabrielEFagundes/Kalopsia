@@ -3,8 +3,8 @@ use shared::data_types::BYTE;
 
 use crate::{enumerations::Relationship, objects::edge::Edge};
 
-impl Serializer for Edge{
-    fn serialize(&self, buf: &mut Vec<BYTE>){
+impl Serializer for Edge {
+    fn serialize(&self, buf: &mut Vec<BYTE>) {
         Self::serialize_i32(buf, self.weight());
         Self::serialize_i32(buf, self.relationship() as i32);
     }

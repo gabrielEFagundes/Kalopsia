@@ -4,22 +4,25 @@ use chrono::{DateTime, Local};
 use lib::{id_engine::list_builder::Identifier, ss_engine::serializer::Serializer};
 use shared::{data_types::BYTE, orderedf64::Orderedf64};
 
-use crate::{enumerations::{Relationship, State}, objects::{edge::Edge, node::Node}};
+use crate::{
+    enumerations::{Relationship, State},
+    objects::{edge::Edge, node::Node},
+};
 
-impl Serializer for Node{
-    fn serialize(&self, buf: &mut Vec<BYTE>){
+impl Serializer for Node {
+    fn serialize(&self, buf: &mut Vec<BYTE>) {
         Self::serialize_i32(buf, self.id.0);
         Self::serialize_string(buf, &self.name);
         Self::serialize_f64(buf, self.difficulty.0);
         Self::serialize_i32(buf, self.hours);
 
         Self::serialize_i32(buf, self.req_skills.len() as i32);
-        for i in &self.req_skills{
+        for i in &self.req_skills {
             Self::serialize_string(buf, i);
         }
 
         Self::serialize_i32(buf, self.gain_skills.len() as i32);
-        for i in &self.gain_skills{
+        for i in &self.gain_skills {
             Self::serialize_string(buf, i);
         }
 
@@ -28,8 +31,8 @@ impl Serializer for Node{
         Self::serialize_i32(buf, self.state() as i32);
 
         Self::serialize_i32(buf, self.connections().len() as i32);
-        for i in self.connections(){
-            for (k, v) in i{
+        for i in self.connections() {
+            for (k, v) in i {
                 Self::serialize_i32(buf, k.0);
                 Edge::serialize(v, buf);
             }
@@ -44,32 +47,45 @@ impl Serializer for Node{
 
         let mut arr_len = Self::deserialize_i32(buf, cursor);
         let mut req_skills: Vec<String> = Vec::new();
-        for _ in 0..arr_len{
+        for _ in 0..arr_len {
             req_skills.push(Self::deserialize_string(buf, cursor));
         }
 
         arr_len = Self::deserialize_i32(buf, cursor);
         let mut gain_skills: Vec<String> = Vec::new();
-        for _ in 0..arr_len{
+        for _ in 0..arr_len {
             gain_skills.push(Self::deserialize_string(buf, cursor));
         }
 
         let interest = Self::deserialize_i32(buf, cursor);
-        let idea_added_at: DateTime<Local> = Self::deserialize_string(buf, cursor).parse().expect("[ERROR] can't resolve timestamp");
+        let idea_added_at: DateTime<Local> = Self::deserialize_string(buf, cursor)
+            .parse()
+            .expect("[ERROR] can't resolve timestamp");
         let state = State::try_from(Self::deserialize_i32(buf, cursor)).unwrap();
 
         arr_len = Self::deserialize_i32(buf, cursor);
         let mut connections: Vec<BTreeMap<Identifier, Edge>> = Vec::new();
-        for _ in 0..arr_len{
+        for _ in 0..arr_len {
             let key = Identifier(Self::deserialize_i32(buf, cursor));
 
             let edge = Edge::new(
-                Self::deserialize_i32(buf, cursor), 
-                Relationship::try_from(Self::deserialize_i32(buf, cursor)).unwrap()
+                Self::deserialize_i32(buf, cursor),
+                Relationship::try_from(Self::deserialize_i32(buf, cursor)).unwrap(),
             );
             connections.push(BTreeMap::from([(key, edge)]));
         }
 
-        Node::from(id, name, difficulty, hours, req_skills, gain_skills, interest, idea_added_at, state, connections)
+        Node::from(
+            id,
+            name,
+            difficulty,
+            hours,
+            req_skills,
+            gain_skills,
+            interest,
+            idea_added_at,
+            state,
+            connections,
+        )
     }
 }

@@ -1,7 +1,7 @@
 use crate::objects::node::Node;
 
 /// Main struct for defining an external object (not part of the graph).
-/// 
+///
 /// Used mostly for defining the person, in case of Kalopsia's v1.
 #[allow(non_snake_case)]
 #[derive(Debug, Clone)]
@@ -22,7 +22,7 @@ impl Obj {
         }
     }
 
-    pub fn from(nodes_done: Vec<Node>, skills: Vec<String>) -> Self{
+    pub fn from(nodes_done: Vec<Node>, skills: Vec<String>) -> Self {
         Self { nodes_done, skills }
     }
 
@@ -38,7 +38,11 @@ impl Obj {
         }
     }
 
-    pub fn nodes_done(&self) -> &Vec<Node>{ &self.nodes_done }
+    pub fn nodes_done(&self) -> &Vec<Node> {
+        &self.nodes_done
+    }
 
-    pub fn skills(&self) -> &Vec<String>{ &self.skills }
+    pub fn skills(&self) -> &Vec<String> {
+        &self.skills
+    }
 }

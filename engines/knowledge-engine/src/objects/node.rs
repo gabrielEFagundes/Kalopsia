@@ -44,8 +44,8 @@ impl Node {
             gain_skills,
             interest: 100,
             idea_added_at: Local::now(), // now.
-            state: State::NOT_STARTED, // starts as NOT_STARTED
-            connections: Vec::new(),   // will not have connections when initializing
+            state: State::NOT_STARTED,   // starts as NOT_STARTED
+            connections: Vec::new(),     // will not have connections when initializing
         }
     }
 
@@ -59,7 +59,7 @@ impl Node {
         interest: i32,
         idea_added_at: DateTime<Local>,
         state: State,
-        connections: Vec<BTreeMap<Identifier, Edge>>
+        connections: Vec<BTreeMap<Identifier, Edge>>,
     ) -> Self {
         Self {
             id,
@@ -71,7 +71,7 @@ impl Node {
             interest,
             idea_added_at,
             state,
-            connections
+            connections,
         }
     }
 
@@ -97,13 +97,19 @@ impl Node {
     }
 
     /// Getter for read-only access to interest field.
-    pub fn interest(&self) -> i32{ self.interest }
+    pub fn interest(&self) -> i32 {
+        self.interest
+    }
 
     /// Getter for read-only access to ideaAddedAt field.
-    pub fn idea_added_at(&self) -> DateTime<Local>{ self.idea_added_at }
+    pub fn idea_added_at(&self) -> DateTime<Local> {
+        self.idea_added_at
+    }
 
     /// Getter for read-only access to state field.
-    pub fn state(&self) -> State{ self.state }
+    pub fn state(&self) -> State {
+        self.state
+    }
 
     /// Getter for read-only access to connections field.
     pub fn connections(&self) -> &Vec<BTreeMap<Identifier, Edge>> {
