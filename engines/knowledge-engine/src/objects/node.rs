@@ -1,6 +1,7 @@
 use crate::{enumerations::State, objects::edge::Edge};
 use chrono::{DateTime, Local};
-use lib::id_engine::builder::Identifier;
+use lib::{id_engine::builder::Identifier, impl_identifier};
+use lib::id_engine::builder::{HasId, IdPool};
 use shared::orderedf64::Orderedf64;
 use std::collections::BTreeMap;
 
@@ -20,6 +21,7 @@ pub struct Node {
     connections: Vec<BTreeMap<Identifier, Edge>>,
 }
 
+impl_identifier!(Node);
 impl Node {
     /// Constructor with the required fields to create a node.
     ///
@@ -36,7 +38,7 @@ impl Node {
         gain_skills: Vec<String>,
     ) -> Self {
         Self {
-            id: Identifier(1), //tmp
+            id: Self::alloc_id(),
             name,
             difficulty,
             hours,

@@ -2,7 +2,7 @@ use knowledge_engine::enumerations::Relationship;
 use knowledge_engine::objects::edge::Edge;
 use knowledge_engine::objects::node::Node;
 use knowledge_engine::objects::obj::Obj;
-use lib::{data_io, impl_identifier};
+use lib::{data_io};
 use lib::ss_engine::serializer::Serializer;
 use shared::debug;
 use shared::orderedf64::Orderedf64;

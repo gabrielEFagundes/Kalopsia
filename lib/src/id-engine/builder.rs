@@ -16,7 +16,7 @@ impl IdPool{
         Self { next: 1, free: Vec::new() }
     }
 
-    fn next(&mut self) -> i32{
+    pub fn next(&mut self) -> i32{
         match self.free.pop(){
             Some(id) => id,
             None => {
@@ -27,11 +27,11 @@ impl IdPool{
         }
     }
 
-    fn free(&mut self, id: i32){
+    pub fn free(&mut self, id: i32){
         self.free.push(id);
     }
 
-    fn with_pool<T: 'static, R>(f: impl FnOnce(&mut IdPool) -> R) -> R{
+    pub fn with_pool<T: 'static, R>(f: impl FnOnce(&mut IdPool) -> R) -> R{
         let mut map = POOL.lock().unwrap();
         let pool = map.entry(TypeId::of::<T>()).or_insert_with(|| IdPool::new());
         f(pool)
@@ -39,6 +39,6 @@ impl IdPool{
 }
 
 pub trait HasId{
-    fn alloc_id(&mut self);
+    fn alloc_id() -> Identifier;
     fn free_id(&mut self);
 }
