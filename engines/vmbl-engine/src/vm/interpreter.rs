@@ -7,6 +7,7 @@ use crate::{
     },
 };
 use core::panic;
+use knowledge_engine::runtime_utils::Graph;
 use shared::data_types::ValueType;
 
 pub struct Interpreter {
@@ -69,7 +70,7 @@ impl Interpreter {
         }
     }
 
-    fn interpret_instruct(&mut self) {
+    fn interpret_instruct(&mut self, graph: &mut Graph) {
         let mut stack_indexes: Vec<ValueType> = Vec::new();
 
         while self.cursor < self.bytes.len() as u32 {
@@ -84,10 +85,10 @@ impl Interpreter {
 
                 Bytecode::DEFINE => {
                     self.read();
-                    let current_byte_type = self.bytes[self.cursor as usize];
+                    let _current_byte_type = self.bytes[self.cursor as usize];
 
                     'node: {
-                        if current_byte_type == Bytecode::OBJ as u8 {
+                        if _current_byte_type == Bytecode::OBJ as u8 {
                             break 'node;
                         }
 
@@ -99,7 +100,7 @@ impl Interpreter {
                     };
 
                     'obj: {
-                        if current_byte_type == Bytecode::NODE as u8 {
+                        if _current_byte_type == Bytecode::NODE as u8 {
                             break 'obj;
                         } // maybe an overhead, but works and is safe
 
@@ -114,28 +115,32 @@ impl Interpreter {
                 Bytecode::QUERY => {
                     self.read();
                     let _current_byte_type = self.bytes[self.cursor as usize];
-                    // yet to implement, working on parser for saving file, uh
+                    /* -- just a kind reminder here, from Gabriel of 26/09/01 --
+                    THE ID AND SS ENGINES WERE PAINFUL
+                    genuinely, I hated writing them, both came out of nowhere because of 
+                    problems I had while writing the interpreter of VMBL itself. 
+                    
+                    I'm glad it's over, but I'll never forget how terrible those were to write.*/
 
                     'node: {
+                        if _current_byte_type != Bytecode::NODE as u8{ break 'node; }
                         break 'node;
                     }
 
                     'obj: {
+                        if _current_byte_type != Bytecode::OBJ as u8{ break 'obj; }
                         break 'obj;
                     }
 
                     'path: {
+                        if _current_byte_type != Bytecode::PATH as u8{ break 'path; }
                         break 'path;
                     }
 
                     'next: {
+                        if _current_byte_type != Bytecode::NEXT as u8{ break 'next; }
                         break 'next;
                     }
-                }
-
-                Bytecode::PATH => {
-                    println!("PATH");
-                    break;
                 }
 
                 Bytecode::MK_ARRAY => {
@@ -146,7 +151,7 @@ impl Interpreter {
                     for _i in 0..count {
                         _disposable_arr.push(stack_indexes.pop().unwrap().clone());
                     }
-                    stack_indexes.push(ValueType::Vec(_disposable_arr));
+                    stack_indexes.push(ValueType::DVec(_disposable_arr));
 
                     self.read();
                 }
@@ -160,7 +165,7 @@ impl Interpreter {
         println!("[DEBUG] cleared pushed array: {:#?}", stack_indexes);
     }
 
-    pub fn interpret(&mut self) {
+    pub fn interpret(&mut self, graph: &mut Graph) {
         if !utils::is_bytecode_valid(&self.bytes) {
             panic!(
                 "[ERROR] bytecode is invalid.\nhave you compiled it through a compatible version of VMBL?"
@@ -174,6 +179,6 @@ impl Interpreter {
         }
         //println!("{:#?}", self.constants);
 
-        self.interpret_instruct();
+        self.interpret_instruct(graph);
     }
 }

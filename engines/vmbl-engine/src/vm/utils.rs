@@ -1,6 +1,6 @@
 use crate::dictionary::Bytecode;
 use shared::data_types::ValueType;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 pub fn is_bytecode_valid(bytes: &[u8]) -> bool {
     let expect_magic_num = u16::from_be_bytes([bytes[1], bytes[0]]) == Bytecode::MAGIC_NUM as u16;
@@ -12,12 +12,12 @@ pub fn is_bytecode_valid(bytes: &[u8]) -> bool {
 
 pub fn map_node_vals(
     mut stack: HashMap<String, ValueType>,
-) -> (String, f64, i32, Vec<String>, Vec<String>) {
+) -> (String, f64, i32, HashSet<String>, HashSet<String>) {
     let name = stack.remove("name").unwrap().as_str();
     let difficulty = stack.remove("difficulty").unwrap().as_double();
     let hours = stack.remove("hours").unwrap().as_int();
-    let req_skills = stack.remove("req_skills").unwrap().as_vec();
-    let gain_skills = stack.remove("gain_skills").unwrap().as_vec();
+    let req_skills = stack.remove("req_skills").unwrap().as_hashset();
+    let gain_skills = stack.remove("gain_skills").unwrap().as_hashset();
 
     (
         name,
@@ -28,11 +28,11 @@ pub fn map_node_vals(
     )
 }
 
-pub fn map_obj_vals(mut stack: HashMap<String, ValueType>) -> Vec<String> {
+pub fn map_obj_vals(mut stack: HashMap<String, ValueType>) -> HashSet<String> {
     stack
         .remove("skills")
         .unwrap()
-        .as_vec()
+        .as_hashset()
         .into_iter()
         .map(|v| v.as_str())
         .collect()

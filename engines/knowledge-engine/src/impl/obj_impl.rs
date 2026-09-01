@@ -1,3 +1,5 @@
+use std::{collections::HashSet, hash::Hash};
+
 use lib::ss_engine::serializer::Serializer;
 use shared::data_types::BYTE;
 
@@ -24,9 +26,9 @@ impl Serializer for Obj {
         }
 
         arr_len = Self::deserialize_i32(buf, cursor);
-        let mut skills: Vec<String> = Vec::new();
+        let mut skills: HashSet<String> = HashSet::new();
         for _ in 0..arr_len {
-            skills.push(Self::deserialize_string(buf, cursor));
+            skills.insert(Self::deserialize_string(buf, cursor));
         }
 
         Obj::from(nodes_done, skills)

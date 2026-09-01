@@ -1,4 +1,4 @@
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashMap, HashSet};
 
 use chrono::{DateTime, Local};
 use lib::{id_engine::builder::Identifier, ss_engine::serializer::Serializer};
@@ -46,15 +46,15 @@ impl Serializer for Node {
         let hours = Self::deserialize_i32(buf, cursor);
 
         let mut arr_len = Self::deserialize_i32(buf, cursor);
-        let mut req_skills: Vec<String> = Vec::new();
+        let mut req_skills: HashSet<String> = HashSet::new();
         for _ in 0..arr_len {
-            req_skills.push(Self::deserialize_string(buf, cursor));
+            req_skills.insert(Self::deserialize_string(buf, cursor));
         }
 
         arr_len = Self::deserialize_i32(buf, cursor);
-        let mut gain_skills: Vec<String> = Vec::new();
+        let mut gain_skills: HashSet<String> = HashSet::new();
         for _ in 0..arr_len {
-            gain_skills.push(Self::deserialize_string(buf, cursor));
+            gain_skills.insert(Self::deserialize_string(buf, cursor));
         }
 
         let interest = Self::deserialize_i32(buf, cursor);
@@ -64,7 +64,7 @@ impl Serializer for Node {
         let state = State::try_from(Self::deserialize_i32(buf, cursor)).unwrap();
 
         arr_len = Self::deserialize_i32(buf, cursor);
-        let mut connections: Vec<BTreeMap<Identifier, Edge>> = Vec::new();
+        let mut connections: Vec<HashMap<Identifier, Edge>> = Vec::new();
         for _ in 0..arr_len {
             let key = Identifier(Self::deserialize_i32(buf, cursor));
 
@@ -72,7 +72,7 @@ impl Serializer for Node {
                 Self::deserialize_i32(buf, cursor),
                 Relationship::try_from(Self::deserialize_i32(buf, cursor)).unwrap(),
             );
-            connections.push(BTreeMap::from([(key, edge)]));
+            connections.push(HashMap::from([(key, edge)]));
         }
 
         Node::from(

@@ -2,7 +2,7 @@ use std::{any::TypeId, collections::HashMap, sync::{LazyLock, Mutex}};
 
 static POOL: LazyLock<Mutex<HashMap<TypeId, IdPool>>> = LazyLock::new(|| Mutex::new(HashMap::new()));
 
-#[derive(Debug, Clone, Default, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Identifier(pub i32);
 
 pub struct IdPool{
