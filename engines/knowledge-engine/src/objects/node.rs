@@ -80,10 +80,17 @@ impl Node {
     /// Function used to add new connections to the Node, including other Nodes and the edges that connects them
     ///
     /// Updates both the current Node and the connected Node
+    /// 
+    /// # Attention
+    /// Edges are CLONED when being inserted into the nodes' connections
+    /// 
+    /// This means that, if anywhere in the runtime of Kalopsia, those are changed, these cloned values WILL NOT
+    /// change, nothing will break, but data will be wrong. 
+    /// 
+    /// Worth noting it here before future-dev Gabriel forgets and goes through another session of hellish debbuging.
     pub fn add_conn(&mut self, node: &mut Node, edge: Edge) {
-        // TODO: still need to fix of this code
         let mut conn: HashMap<Identifier, Edge> = HashMap::new();
-        conn.insert(node.clone().id, edge);
+        conn.insert(node.clone().id, edge.clone());
 
         self.connections.push(conn);
 

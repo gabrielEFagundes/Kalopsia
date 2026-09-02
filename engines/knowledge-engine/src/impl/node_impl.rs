@@ -1,4 +1,4 @@
-use std::collections::{BTreeMap, HashMap, HashSet};
+use std::collections::{HashMap, HashSet};
 
 use chrono::{DateTime, Local};
 use lib::{id_engine::builder::Identifier, ss_engine::serializer::Serializer};
@@ -71,6 +71,7 @@ impl Serializer for Node {
             let edge = Edge::new(
                 Self::deserialize_i32(buf, cursor),
                 Relationship::try_from(Self::deserialize_i32(buf, cursor)).unwrap(),
+                Identifier(Self::deserialize_i32(buf, cursor))
             );
             connections.push(HashMap::from([(key, edge)]));
         }
