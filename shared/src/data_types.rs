@@ -2,15 +2,14 @@ use std::collections::HashSet;
 
 pub type BYTE = u8;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub enum ValueType {
     Str(String),
     Int(i32),
     Double(f64),
-    Vec(HashSet<ValueType>),
-    DVec(Vec<ValueType>),
+    Vec(Vec<ValueType>),
 
-    Default,
+    #[default] Default,
 }
 
 impl ValueType {
@@ -62,7 +61,7 @@ impl ValueType {
         }
     }
 
-    pub fn as_hashset(self) -> HashSet<ValueType> {
+    pub fn as_hashset(self) -> Vec<ValueType> {
         if let ValueType::Vec(v) = self {
             v
         } else {

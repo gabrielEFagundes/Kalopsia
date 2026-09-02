@@ -1,22 +1,13 @@
+use core::runtime::Runtime;
 use std::collections::HashSet;
 
-use knowledge_engine::enumerations::Relationship;
-use knowledge_engine::objects::edge::Edge;
-use knowledge_engine::objects::node::Node;
-use knowledge_engine::objects::obj::Obj;
-use knowledge_engine::runtime_utils::Runtime;
-use lib::{data_io};
-use lib::ss_engine::serializer::Serializer;
-use shared::debug;
-use shared::orderedf64::Orderedf64;
+use knowledge_engine::{enumerations::Relationship, objects::{edge::Edge, node::Node, obj::Obj}};
+use lib::{data_io, ss_engine::serializer::Serializer};
+use shared::{data_types::BYTE, debug, orderedf64::Orderedf64};
 
-/// ## TEST FUNCTION
-/// For the Knowledge Engine, this is not used by the main Kalopsia software.
-///
-/// Simply ignore this file if you're not here to test this specific module.
 fn main() {
-    let runtime = Runtime::new();
-    
+    let mut runtime = Runtime::new();
+
     let mut dev = Obj::new(HashSet::from(["Skill 1".to_string(), "Skill 2".to_string()]));
 
     let mut node = Node::new(
@@ -46,8 +37,17 @@ fn main() {
     node.add_conn(&mut node2, edge_between_node1and2);
     dev.add_nodes(vec![&node, &node2]);
 
+    // -- VMBL ENGINE TEST --
+    vmbl_engine::run(&mut runtime.graph);
+
+    // -- DATA SERIALIZING TEST --
+    //serialize_data(node);
+}
+
+#[allow(dead_code)]
+fn serialize_data(test_node: Node){
     let mut buffer: Vec<shared::data_types::BYTE> = Vec::new();
-    node.serialize(&mut buffer);
+    test_node.serialize(&mut buffer);
 
     _ = data_io::appendf(&buffer, "./test-data.bin/graph.bin");
 

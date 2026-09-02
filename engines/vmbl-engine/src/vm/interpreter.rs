@@ -1,19 +1,16 @@
 use crate::{
-    dictionary::{ByteTokenType, Bytecode, as_bytecode, as_bytetokentype},
-    vm::{
-        constants::{interpret_double_byte, interpret_int_byte, interpret_string_byte},
-        interactions::{create_node, create_obj},
-        utils,
+    dictionary::{ByteTokenType, Bytecode, as_bytecode, as_bytetokentype}, vm::{
+        constants::{interpret_double_byte, interpret_int_byte, interpret_string_byte}, interactions::{create_node, create_obj, query_node, query_obj}, utils,
     },
 };
 use core::panic;
 use knowledge_engine::runtime_utils::Graph;
-use shared::data_types::ValueType;
+use shared::{data_types::ValueType, debug};
 
 pub struct Interpreter {
     pub constants: Vec<ValueType>,
     pub bytes: Vec<u8>,
-    pub cursor: u32,
+    pub cursor: usize,
 }
 
 #[allow(dead_code)]
@@ -27,12 +24,12 @@ impl Interpreter {
     }
 
     pub fn read(&mut self) -> u8 {
-        self.cursor += 1;
-        self.bytes[self.cursor as usize]
+        if self.bytes.len() > self.cursor+1{ self.cursor+=1; }
+        self.bytes[self.cursor]
     }
 
     fn read_amount(&mut self, amount: u32) -> u8 {
-        self.cursor += amount;
+        self.cursor += amount as usize;
         self.bytes[self.cursor as usize]
     }
 
@@ -73,7 +70,7 @@ impl Interpreter {
     fn interpret_instruct(&mut self, graph: &mut Graph) {
         let mut stack_indexes: Vec<ValueType> = Vec::new();
 
-        while self.cursor < self.bytes.len() as u32 {
+        while self.cursor < self.bytes.len()-1 {
             match as_bytecode(self.bytes[self.cursor as usize]) {
                 Bytecode::PUSH => {
                     self.read();
@@ -93,7 +90,7 @@ impl Interpreter {
                         }
 
                         self.read();
-                        create_node(&mut stack_indexes);
+                        graph.add_node(create_node(&mut stack_indexes));
 
                         self.read();
                         break 'node;
@@ -105,7 +102,7 @@ impl Interpreter {
                         } // maybe an overhead, but works and is safe
 
                         self.read();
-                        create_obj(&mut stack_indexes);
+                        graph.add_object(create_obj(&mut stack_indexes));
 
                         self.read();
                         break 'obj;
@@ -124,21 +121,36 @@ impl Interpreter {
 
                     'node: {
                         if _current_byte_type != Bytecode::NODE as u8{ break 'node; }
+                        self.read();
+                        debug!("{:#?}", query_node(&mut stack_indexes, graph)); // temp until front
+
+                        self.read();
                         break 'node;
                     }
 
                     'obj: {
                         if _current_byte_type != Bytecode::OBJ as u8{ break 'obj; }
+                        self.read();
+                        debug!("{:#?}", query_obj(&mut stack_indexes, graph));
+
+                        self.read();
                         break 'obj;
                     }
 
                     'path: {
                         if _current_byte_type != Bytecode::PATH as u8{ break 'path; }
+                        self.read();
+                        println!("[INFO] `QUERY PATH TO` not implemented");
+
+                        self.read();
                         break 'path;
                     }
 
                     'next: {
                         if _current_byte_type != Bytecode::NEXT as u8{ break 'next; }
+                        println!("[INFO] `QUERY NEXT` not implemented");
+
+                        self.read();
                         break 'next;
                     }
                 }
@@ -151,18 +163,14 @@ impl Interpreter {
                     for _i in 0..count {
                         _disposable_arr.push(stack_indexes.pop().unwrap().clone());
                     }
-                    stack_indexes.push(ValueType::DVec(_disposable_arr));
+                    stack_indexes.push(ValueType::Vec(_disposable_arr));
 
                     self.read();
                 }
 
-                _ => {
-                    println!("[DEBUG] Stopped at {}", self.bytes[self.cursor as usize]);
-                    break;
-                }
+                _ => break
             }
         }
-        println!("[DEBUG] cleared pushed array: {:#?}", stack_indexes);
     }
 
     pub fn interpret(&mut self, graph: &mut Graph) {
@@ -177,7 +185,6 @@ impl Interpreter {
         if self.constants.is_empty() {
             self.mount_buffered_constants();
         }
-        //println!("{:#?}", self.constants);
 
         self.interpret_instruct(graph);
     }

@@ -7,7 +7,7 @@ pub struct Graph{
 }
 
 impl Graph{
-    fn new() -> Self{
+    pub fn new() -> Self{
         Self { nodes: Vec::new(), edges: Vec::new(), objects: Vec::new() }
     }
 
@@ -22,21 +22,16 @@ impl Graph{
     pub fn objects(&self) -> &Vec<Obj>{
         &self.objects
     }
-}
 
-/// ## Warning
-/// This WILL move places, since it's the entire 
-/// Kalopsia's runtime struct.
-/// 
-/// It's inside `runtime_utils` merely because 
-/// the knowledge engine is the only available at 
-/// the moment.
-pub struct Runtime{
-    pub graph: Graph
-}
+    pub fn add_node(&mut self, node: Node){
+        self.nodes.push(node);
+    }
 
-impl Runtime{
-    pub fn new() -> Self{
-        Self { graph: Graph::new() }
+    pub fn add_edge(&mut self, edge: Edge){
+        self.edges.push(edge);
+    }
+
+    pub fn add_object(&mut self, obj: Obj){
+        self.objects.push(obj);
     }
 }

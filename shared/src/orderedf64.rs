@@ -1,4 +1,4 @@
-use std::cmp::Ordering;
+use std::{cmp::Ordering, hash::Hash};
 
 #[derive(Debug, PartialEq, Clone, Copy, Default)]
 pub struct Orderedf64(pub f64);
@@ -19,8 +19,8 @@ impl Ord for Orderedf64 {
     }
 }
 
-impl Orderedf64 {
-    pub fn unwrap(self) -> f64 {
-        self.0
+impl Hash for Orderedf64{
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.0.to_bits().hash(state);
     }
 }
