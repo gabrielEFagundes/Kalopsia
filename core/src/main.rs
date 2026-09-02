@@ -1,14 +1,20 @@
 use core::runtime::Runtime;
 use std::collections::HashSet;
 
-use knowledge_engine::{enumerations::Relationship, objects::{edge::Edge, node::Node, obj::Obj}};
+use knowledge_engine::{
+    enumerations::Relationship,
+    objects::{edge::Edge, node::Node, obj::Obj},
+};
 use lib::{data_io, ss_engine::serializer::Serializer};
-use shared::{data_types::BYTE, debug, orderedf64::Orderedf64};
+use shared::{debug, orderedf64::Orderedf64};
 
 fn main() {
-    let mut runtime = Runtime::new();
+    let _runtime = Runtime::new();
 
-    let mut dev = Obj::new(HashSet::from(["Skill 1".to_string(), "Skill 2".to_string()]));
+    let mut dev = Obj::new(HashSet::from([
+        "Skill 1".to_string(),
+        "Skill 2".to_string(),
+    ]));
 
     let mut node = Node::new(
         String::from("NODE NUMBER 1"),
@@ -32,20 +38,20 @@ fn main() {
         ]),
     );
 
-    let edge_between_node1and2 = Edge::new(8, Relationship::REQUIRED);
+    let edge_between_node1and2 = Edge::new(8, Relationship::REQUIRED, node.id);
 
     node.add_conn(&mut node2, edge_between_node1and2);
     dev.add_nodes(vec![&node, &node2]);
 
     // -- VMBL ENGINE TEST --
-    vmbl_engine::run(&mut runtime.graph);
+    //vmbl_engine::run(&mut runtime.graph);
 
-    // -- DATA SERIALIZING TEST --
-    //serialize_data(node);
+    // -- DATA SERIALIZING & DESERIALIZING TEST --
+    //serialize_deserialize_data(node);
 }
 
 #[allow(dead_code)]
-fn serialize_data(test_node: Node){
+fn serialize_deserialize_data(test_node: Node) {
     let mut buffer: Vec<shared::data_types::BYTE> = Vec::new();
     test_node.serialize(&mut buffer);
 

@@ -1,5 +1,3 @@
-use std::collections::HashSet;
-
 pub type BYTE = u8;
 
 #[derive(Debug, Clone, Default)]
@@ -9,7 +7,8 @@ pub enum ValueType {
     Double(f64),
     Vec(Vec<ValueType>),
 
-    #[default] Default,
+    #[default]
+    Default,
 }
 
 impl ValueType {
@@ -21,9 +20,9 @@ impl ValueType {
         }
     }
 
-    pub fn as_ref_str(&self) -> &String{
-        if let ValueType::Str(s) = self{
-            &s
+    pub fn as_ref_str(&self) -> &String {
+        if let ValueType::Str(s) = self {
+            s
         } else {
             panic!("[ERROR] expected string reference");
         }
@@ -37,9 +36,9 @@ impl ValueType {
         }
     }
 
-    pub fn as_ref_int(&self) -> &i32{
-        if let ValueType::Int(i) = self{
-            &i
+    pub fn as_ref_int(&self) -> &i32 {
+        if let ValueType::Int(i) = self {
+            i
         } else {
             panic!("[ERROR] expected int reference");
         }
@@ -53,9 +52,9 @@ impl ValueType {
         }
     }
 
-    pub fn as_ref_double(&self) -> &f64{
-        if let ValueType::Double(f) = self{
-            &f
+    pub fn as_ref_double(&self) -> &f64 {
+        if let ValueType::Double(f) = self {
+            f
         } else {
             panic!("[ERROR] expected double reference");
         }

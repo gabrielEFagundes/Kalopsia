@@ -3,8 +3,8 @@ pub mod vm;
 
 use std::fs;
 
-use knowledge_engine::runtime_utils::Graph;
 use crate::vm::interpreter::Interpreter;
+use knowledge_engine::runtime_utils::Graph;
 
 const TARGET_FILE: &str = "./out/target.ksc";
 
