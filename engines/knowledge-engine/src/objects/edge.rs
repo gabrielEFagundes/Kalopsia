@@ -20,14 +20,17 @@ impl Edge {
         }
     }
 
+    /// Getter for read-only access to the `weight` field.
     pub fn weight(&self) -> i32 {
         self.weight
     }
 
+    /// Getter for read-only access to the `relationship` field.
     pub fn relationship(&self) -> Relationship {
         self.relationship
     }
 
+    /// Getter for read-only access to the `direction` field.
     pub fn direction(&self) -> &Identifier {
         &self.direction
     }

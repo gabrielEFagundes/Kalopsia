@@ -1,3 +1,4 @@
+/// Macro used to print a debug message onto the terminal.
 #[macro_export]
 macro_rules! debug {
     ($($arg:tt)*) => {

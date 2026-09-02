@@ -24,6 +24,7 @@ impl Obj {
         }
     }
 
+    /// Constructor used by the `Serializer` trait, to deserialize an Obj.
     pub fn from(nodes_done: Vec<Node>, skills: HashSet<String>) -> Self {
         Self { nodes_done, skills }
     }
@@ -40,10 +41,12 @@ impl Obj {
         }
     }
 
+    /// Getter for read-only access to `nodes_done` field.
     pub fn nodes_done(&self) -> &Vec<Node> {
         &self.nodes_done
     }
 
+    /// Getter for read-only access to `skills` field.
     pub fn skills(&self) -> &HashSet<String> {
         &self.skills
     }

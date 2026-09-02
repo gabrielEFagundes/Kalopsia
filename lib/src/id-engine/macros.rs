@@ -1,3 +1,4 @@
+/// Macro used to implement the Identifier-Generation logic to a struct.
 #[macro_export]
 macro_rules! impl_identifier {
     ($($t:ty)+$(,)?) => {

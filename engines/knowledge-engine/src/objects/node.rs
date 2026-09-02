@@ -27,7 +27,7 @@ impl Node {
     ///
     /// ### Default fields:
     /// - `interest`: Starts out as 100 and decays according to the Dev currentEntropy value
-    /// - `ideaAddedAt`: DateTime according to the host's current datetime when a Node is created
+    /// - `idea_added_at`: DateTime according to the host's current datetime when a Node is created
     /// - `state`: Always defaults to NOT_STARTED
     /// - `connections`: Always starts empty and is dynamically allocated
     pub fn new(
@@ -51,6 +51,7 @@ impl Node {
         }
     }
 
+    /// Constructor used by the `serializer` trait to deserialize a Node.
     pub fn from(
         id: Identifier,
         name: String,
@@ -105,22 +106,22 @@ impl Node {
         self.state = new_state;
     }
 
-    /// Getter for read-only access to interest field.
+    /// Getter for read-only access to `interest` field.
     pub fn interest(&self) -> i32 {
         self.interest
     }
 
-    /// Getter for read-only access to ideaAddedAt field.
+    /// Getter for read-only access to `idea_added_at` field.
     pub fn idea_added_at(&self) -> DateTime<Local> {
         self.idea_added_at
     }
 
-    /// Getter for read-only access to state field.
+    /// Getter for read-only access to `state` field.
     pub fn state(&self) -> State {
         self.state
     }
 
-    /// Getter for read-only access to connections field.
+    /// Getter for read-only access to `connections` field.
     pub fn connections(&self) -> &Vec<HashMap<Identifier, Edge>> {
         &self.connections
     }
