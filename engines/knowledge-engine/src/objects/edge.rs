@@ -16,7 +16,7 @@ impl Edge {
         Self {
             weight,
             relationship,
-            direction
+            direction,
         }
     }
 
@@ -28,7 +28,7 @@ impl Edge {
         self.relationship
     }
 
-    pub fn direction(&self) -> &Identifier{
+    pub fn direction(&self) -> &Identifier {
         &self.direction
     }
 }

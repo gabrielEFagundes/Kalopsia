@@ -7,7 +7,7 @@ pub fn interpret_string_byte(interpreter: &mut Interpreter, length: u8) -> Strin
 
     for _i in 0..length {
         interpreter.read();
-        mounted_str.push(interpreter.bytes[interpreter.cursor as usize] as char);
+        mounted_str.push(interpreter.bytes[interpreter.cursor] as char);
     }
 
     mounted_str.into_iter().collect()
@@ -18,7 +18,7 @@ pub fn interpret_int_byte(interpreter: &mut Interpreter) -> i32 {
     let mut bytes: Vec<u8> = Vec::new();
 
     for _i in 0..=3 {
-        bytes.push(interpreter.bytes[interpreter.cursor as usize]);
+        bytes.push(interpreter.bytes[interpreter.cursor]);
         interpreter.read();
     }
 
@@ -34,7 +34,7 @@ pub fn interpret_double_byte(interpreter: &mut Interpreter) -> f64 {
     let mut bytes: Vec<u8> = Vec::new();
 
     for _i in 0..=7 {
-        bytes.push(interpreter.bytes[interpreter.cursor as usize]);
+        bytes.push(interpreter.bytes[interpreter.cursor]);
         interpreter.read();
     }
 

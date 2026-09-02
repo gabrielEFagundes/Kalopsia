@@ -71,7 +71,7 @@ impl Serializer for Node {
             let edge = Edge::new(
                 Self::deserialize_i32(buf, cursor),
                 Relationship::try_from(Self::deserialize_i32(buf, cursor)).unwrap(),
-                Identifier(Self::deserialize_i32(buf, cursor))
+                Identifier(Self::deserialize_i32(buf, cursor)),
             );
             connections.push(HashMap::from([(key, edge)]));
         }

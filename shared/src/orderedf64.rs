@@ -19,7 +19,7 @@ impl Ord for Orderedf64 {
     }
 }
 
-impl Hash for Orderedf64{
+impl Hash for Orderedf64 {
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
         self.0.to_bits().hash(state);
     }

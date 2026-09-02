@@ -1,7 +1,7 @@
 use crate::{enumerations::State, objects::edge::Edge};
 use chrono::{DateTime, Local};
-use lib::{id_engine::builder::Identifier, impl_identifier};
 use lib::id_engine::builder::{HasId, IdPool};
+use lib::{id_engine::builder::Identifier, impl_identifier};
 use shared::orderedf64::Orderedf64;
 use std::collections::{HashMap, HashSet};
 
@@ -80,13 +80,13 @@ impl Node {
     /// Function used to add new connections to the Node, including other Nodes and the edges that connects them
     ///
     /// Updates both the current Node and the connected Node
-    /// 
+    ///
     /// # Attention
     /// Edges are CLONED when being inserted into the nodes' connections
-    /// 
+    ///
     /// This means that, if anywhere in the runtime of Kalopsia, those are changed, these cloned values WILL NOT
-    /// change, nothing will break, but data will be wrong. 
-    /// 
+    /// change, nothing will break, but data will be wrong.
+    ///
     /// Worth noting it here before future-dev Gabriel forgets and goes through another session of hellish debbuging.
     pub fn add_conn(&mut self, node: &mut Node, edge: Edge) {
         let mut conn: HashMap<Identifier, Edge> = HashMap::new();
