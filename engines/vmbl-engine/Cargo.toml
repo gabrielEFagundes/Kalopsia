@@ -1,0 +1,9 @@
+[package]
+name = "vmbl-engine"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+knowledge-engine = {path = "../knowledge-engine"}
+lib = {path = "../../lib"}
+shared = {path = "../../shared"}

@@ -1,3 +1,4 @@
 [submodule "Kalopsia-Steps"]
 	path = Kalopsia-Steps
 	url = https://github.com/gabrielEFagundes/Kalopsia-Steps
+	branch = main

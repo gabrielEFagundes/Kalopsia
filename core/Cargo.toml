@@ -1,0 +1,10 @@
+[package]
+name = "core"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+knowledge-engine = {path="../engines/knowledge-engine"}
+vmbl-engine = {path="../engines/vmbl-engine"}
+shared = {path="../shared"}
+lib = {path="../lib"}
