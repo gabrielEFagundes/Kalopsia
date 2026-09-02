@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use crate::objects::node::Node;
 
 /// Main struct for defining an external object (not part of the graph).
@@ -7,7 +9,7 @@ use crate::objects::node::Node;
 #[derive(Debug, Clone)]
 pub struct Obj {
     nodes_done: Vec<Node>,
-    skills: Vec<String>, //currConfidence: HashMap<Node, i32> I need to study the ways I can do this
+    skills: HashSet<String>, //currConfidence: HashMap<Node, i32> I need to study the ways I can do this
 }
 
 impl Obj {
@@ -15,14 +17,14 @@ impl Obj {
     ///
     /// ### Default fields:
     /// - `nodesDone`: Always starts empty and gets added dynamically
-    pub fn new(skills: Vec<String>) -> Self {
+    pub fn new(skills: HashSet<String>) -> Self {
         Self {
             nodes_done: Vec::new(),
             skills,
         }
     }
 
-    pub fn from(nodes_done: Vec<Node>, skills: Vec<String>) -> Self {
+    pub fn from(nodes_done: Vec<Node>, skills: HashSet<String>) -> Self {
         Self { nodes_done, skills }
     }
 
@@ -42,7 +44,7 @@ impl Obj {
         &self.nodes_done
     }
 
-    pub fn skills(&self) -> &Vec<String> {
+    pub fn skills(&self) -> &HashSet<String> {
         &self.skills
     }
 }

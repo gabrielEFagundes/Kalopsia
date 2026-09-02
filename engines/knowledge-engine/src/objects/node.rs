@@ -3,22 +3,22 @@ use chrono::{DateTime, Local};
 use lib::{id_engine::builder::Identifier, impl_identifier};
 use lib::id_engine::builder::{HasId, IdPool};
 use shared::orderedf64::Orderedf64;
-use std::collections::BTreeMap;
+use std::collections::{HashMap, HashSet};
 
 /// Main struct used to define a Node for the graph
 #[allow(non_snake_case)]
-#[derive(Debug, Clone, Default, Ord, PartialOrd, Eq, PartialEq)]
+#[derive(Debug, Clone, Default)]
 pub struct Node {
     pub id: Identifier,
     pub name: String,
     pub difficulty: Orderedf64,
     pub hours: i32,
-    pub req_skills: Vec<String>,
-    pub gain_skills: Vec<String>,
+    pub req_skills: HashSet<String>,
+    pub gain_skills: HashSet<String>,
     interest: i32,
     idea_added_at: DateTime<Local>,
     state: State,
-    connections: Vec<BTreeMap<Identifier, Edge>>,
+    connections: Vec<HashMap<Identifier, Edge>>,
 }
 
 impl_identifier!(Node);
@@ -34,8 +34,8 @@ impl Node {
         name: String,
         difficulty: Orderedf64,
         hours: i32,
-        req_skills: Vec<String>,
-        gain_skills: Vec<String>,
+        req_skills: HashSet<String>,
+        gain_skills: HashSet<String>,
     ) -> Self {
         Self {
             id: Self::alloc_id(),
@@ -56,12 +56,12 @@ impl Node {
         name: String,
         difficulty: Orderedf64,
         hours: i32,
-        req_skills: Vec<String>,
-        gain_skills: Vec<String>,
+        req_skills: HashSet<String>,
+        gain_skills: HashSet<String>,
         interest: i32,
         idea_added_at: DateTime<Local>,
         state: State,
-        connections: Vec<BTreeMap<Identifier, Edge>>,
+        connections: Vec<HashMap<Identifier, Edge>>,
     ) -> Self {
         Self {
             id,
@@ -82,12 +82,12 @@ impl Node {
     /// Updates both the current Node and the connected Node
     pub fn add_conn(&mut self, node: &mut Node, edge: Edge) {
         // TODO: still need to fix of this code
-        let mut conn: BTreeMap<Identifier, Edge> = BTreeMap::new();
+        let mut conn: HashMap<Identifier, Edge> = HashMap::new();
         conn.insert(node.clone().id, edge);
 
         self.connections.push(conn);
 
-        let mut parent_connection = BTreeMap::new();
+        let mut parent_connection = HashMap::new();
         parent_connection.insert(self.clone().id, edge);
 
         node.connections.push(parent_connection);
@@ -114,7 +114,7 @@ impl Node {
     }
 
     /// Getter for read-only access to connections field.
-    pub fn connections(&self) -> &Vec<BTreeMap<Identifier, Edge>> {
+    pub fn connections(&self) -> &Vec<HashMap<Identifier, Edge>> {
         &self.connections
     }
 
