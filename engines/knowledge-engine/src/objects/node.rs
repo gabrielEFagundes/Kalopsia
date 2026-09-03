@@ -6,7 +6,6 @@ use shared::orderedf64::Orderedf64;
 use std::collections::{HashMap, HashSet};
 
 /// Main struct used to define a Node for the graph
-#[allow(non_snake_case)]
 #[derive(Debug, Clone, Default)]
 pub struct Node {
     pub id: Identifier,
@@ -78,6 +77,10 @@ impl Node {
         }
     }
 
+    pub fn dummy() -> Self{
+        Self { id: Identifier::default(), name: String::default(), difficulty: Orderedf64::default(), hours: 0, req_skills: HashSet::default(), gain_skills: HashSet::default(), interest: 0, idea_added_at: Local::now(), state: State::default(), connections: Vec::default() }
+    }
+
     /// Function used to add new connections to the Node, including other Nodes and the edges that connects them
     ///
     /// Updates both the current Node and the connected Node
@@ -85,7 +88,7 @@ impl Node {
     /// # Attention
     /// Edges are CLONED when being inserted into the nodes' connections
     ///
-    /// This means that, if anywhere in the runtime of Kalopsia, those are changed, these cloned values WILL NOT
+    /// This means that, if anywhere in the runtime of Kalopsia, those are changed, the cloned values WILL NOT
     /// change, nothing will break, but data will be wrong.
     ///
     /// Worth noting it here before future-dev Gabriel forgets and goes through another session of hellish debbuging.
